@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.snowman.blog.dao.UsersMapper">
+
+    <resultMap id="userResult" type="Users">
+        <id property="id" column="userId"/>
+        <result property="userName" column="username"/>
+        <result property="state" column="state"/>
+        <result property="password" column="password"/>
+        <result property="nickName" column="nickname"/>
+        <result property="email" column="email"/>
+        <result property="webSite" column="website"/>
+        <result property="imageName" column="imageName"/>
+    </resultMap>
+
+    <select id="AllUsersList" resultMap="userResult">
+        SELECT * FROM t_user
+    </select>
+
+    <select id="findUsersById" parameterType="map" resultType="users">
+        SELECT * FROM
+          t_user
+        WHERE
+          userId = #{users.id}
+    </select>
+
+    <select id="findLogin" parameterType="map" resultType="users">
+        SELECT * FROM
+          t_user
+        WHERE
+          username = #{users.userName} AND password = #{users.password}
+    </select>
+
+    <insert id="saveRecord" parameterType="map" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO t_user
+          (username, password, nickname, email, website, imageName)
+        VALUES
+          (#{users.userName},#{users.password},#{users.nickName},#{users.email},#{users.webSite},#{users.imageName})
+    </insert>
+
+    <update id="updateRecord" parameterType="map">
+        UPDATE t_user SET
+          nickname = #{users.nickName},
+          email = #{users.email},
+          website = #{users.webSite},
+          imageName = #{users.imageName}
+        WHERE
+          userId = #{users.id}
+    </update>
+    
+    <delete id="deleteRecord" parameterType="map">
+        DELETE FROM t_user WHERE userId = #{users.id}
+    </delete>
+</mapper>
